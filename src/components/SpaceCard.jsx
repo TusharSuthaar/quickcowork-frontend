@@ -4,10 +4,12 @@ import { Star, MapPin, Users, Heart, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const SpaceCard = ({ space, className }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const { theme } = useTheme();
 
   const nextImage = (e) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ const SpaceCard = ({ space, className }) => {
     <Link to={`/space/${space.id}`}>
       <div className={cn("group floating-card-elegant card-hover", className)}>
         {/* Image Section */}
-        <div className="relative h-40 sm:h-48 md:h-52 lg:h-56 overflow-hidden rounded-t-3xl">
+        <div className="relative h-48 sm:h-52 overflow-hidden rounded-t-3xl">
           <img
             src={space.images[currentImageIndex]}
             alt={space.title}
@@ -95,7 +97,7 @@ const SpaceCard = ({ space, className }) => {
               size={16} 
               className={cn(
                 "transition-colors",
-                isLiked ? "fill-red-500 text-red-500" : "text-gray-600"
+                isLiked ? "fill-red-500 text-red-500" : theme === 'dark' ? "text-white" : "text-gray-600"
               )} 
             />
           </button>
@@ -123,18 +125,18 @@ const SpaceCard = ({ space, className }) => {
 
           {/* Location */}
           <div className="flex items-center space-x-2 text-muted-foreground text-sm">
-            <MapPin size={16} />
+            <MapPin size={16} className={theme === 'dark' ? 'text-white' : 'text-gray-800'} />
             <span>{space.location}</span>
           </div>
 
           {/* Capacity and Amenities */}
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
-              <Users size={16} />
+              <Users size={16} className={theme === 'dark' ? 'text-white' : 'text-gray-800'} />
               <span className="text-sm">Up to {space.capacity} people</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Clock size={16} />
+              <Clock size={16} className={theme === 'dark' ? 'text-white' : 'text-gray-800'} />
               <span className="text-sm">{space.availability?.length || 0} slots</span>
             </div>
           </div>

@@ -9,10 +9,13 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 flex items-center justify-center text-foreground">
+                <img 
+                  src="/QuickCoWork_Logo_Transparent.svg" 
+                  alt="QuickCoWork Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className="text-xl font-bold gradient-text">QuickCoWork</span>
             </div>
             <p className="text-muted-foreground text-sm">
               Connecting businesses with shared commercial spaces for flexible, affordable operations.

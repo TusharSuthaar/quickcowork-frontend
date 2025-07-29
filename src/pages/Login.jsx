@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Building2, Users, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
@@ -13,6 +14,30 @@ const Login = () => {
     password: '',
     role: 'renter'
   });
+  
+  const roles = [
+    {
+      id: 'renter',
+      title: 'Space Renter',
+      description: 'Access to book and manage spaces',
+      icon: Users,
+      color: 'from-blue-500 to-blue-600'
+    },
+    {
+      id: 'owner',
+      title: 'Space Owner',
+      description: 'Manage your listed spaces',
+      icon: Building2,
+      color: 'from-green-500 to-green-600'
+    },
+    {
+      id: 'admin',
+      title: 'Administrator',
+      description: 'Platform management and oversight',
+      icon: Shield,
+      color: 'from-purple-500 to-purple-600'
+    }
+  ];
   const [showPassword, setShowPassword] = useState(false);
   const { login, loading } = useAuth();
   const { toast } = useToast();
@@ -47,8 +72,7 @@ const Login = () => {
   };
 
   return (
-    <div className="floating-container">
-      <div className="floating-card-elegant w-full max-w-lg lg:max-w-xl p-12 lg:p-16 space-y-8 lg:space-y-12">
+    <div className="floating-card-elegant w-full p-8 space-y-6">
         <div className="text-center space-y-4">
           <h1 className="heading-md gradient-text">Welcome back</h1>
           <p className="text-lg-desktop text-muted-foreground">
@@ -96,18 +120,36 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="space-y-1">
-            <Label htmlFor="role" className="text-sm">I am a</Label>
-            <select
-              id="role"
-              className="w-full h-9 px-2 text-sm border border-input rounded-md bg-background"
-              value={formData.role}
-              onChange={(e) => setFormData({...formData, role: e.target.value})}
-            >
-              <option value="renter">Space Renter</option>
-              <option value="owner">Space Owner</option>
-              <option value="admin">Admin</option>
-            </select>
+          <div className="space-y-3">
+            <Label className="text-sm">Select your role</Label>
+            <div className="grid grid-cols-1 gap-2">
+              {roles.map((role) => (
+                <Card 
+                  key={role.id}
+                  className={`cursor-pointer transition-all hover:shadow-md ${
+                    formData.role === role.id 
+                      ? 'ring-2 ring-primary bg-primary/5' 
+                      : 'hover:bg-muted/50'
+                  }`}
+                  onClick={() => setFormData({...formData, role: role.id})}
+                >
+                  <CardContent className="p-3">
+                    <div className="flex items-center space-x-3">
+                      <div className={`p-2 rounded-lg bg-gradient-to-r ${role.color} text-white`}>
+                        <role.icon className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm">{role.title}</h3>
+                        <p className="text-xs text-muted-foreground">{role.description}</p>
+                      </div>
+                      {formData.role === role.id && (
+                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
 
           <div className="flex items-center justify-between text-xs">
@@ -168,7 +210,6 @@ const Login = () => {
           </Link>
         </p>
       </div>
-    </div>
   );
 };
 

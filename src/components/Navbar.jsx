@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User, LogOut, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import ThemeToggle from '@/components/ThemeToggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,13 +28,17 @@ const Navbar = () => {
   return (
     <nav className="nav-desktop">
       <div className="nav-container">
-        <div className="flex justify-between h-20 lg:h-24">
+        <div className="flex items-center justify-between h-20 lg:h-24">
+          {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-4 group">
-              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                <MapPin className="w-7 h-7 lg:w-8 lg:h-8 text-white" />
+            <Link to="/" className="flex items-center space-x-2 group">
+              <div className="w-32 h-32 lg:w-40 lg:h-40 flex items-center justify-center text-foreground">
+                <img 
+                  src="/QuickCoWork_Logo_Transparent.svg" 
+                  alt="QuickCoWork Logo" 
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform"
+                />
               </div>
-              <span className="text-2xl lg:text-3xl font-bold gradient-text">QuickCoWork</span>
             </Link>
           </div>
 
@@ -54,152 +59,198 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop Auth */}
-          <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src={user?.avatar}
-                      alt={user?.name}
-                    />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user?.name}</p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">
-                        {user?.email}
-                      </p>
+          {/* Right Side - Auth & Mobile Menu */}
+          <div className="flex items-center space-x-4">
+            {/* Desktop Auth */}
+            <div className="hidden md:flex items-center space-x-4">
+              <ThemeToggle />
+              {isAuthenticated ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={user?.avatar}
+                        alt={user?.name}
+                      />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end">
+                    <div className="flex items-center justify-start gap-2 p-2">
+                      <div className="flex flex-col space-y-1 leading-none">
+                        <p className="font-medium">{user?.name}</p>
+                        <p className="w-[200px] truncate text-sm text-muted-foreground">
+                          {user?.email}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/dashboard" className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  {user?.role === 'admin' && (
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/admin" className="cursor-pointer">
+                      <Link to="/dashboard" className="cursor-pointer">
                         <User className="mr-2 h-4 w-4" />
-                        Admin Panel
+                        Dashboard
                       </Link>
                     </DropdownMenuItem>
-                  )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="cursor-pointer">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <Link to="/login">
-                  <Button variant="ghost">Log in</Button>
-                </Link>
-                <Link to="/signup">
-                  <Button className="btn-gradient">Sign up</Button>
-                </Link>
-              </div>
-            )}
-          </div>
+                    {user?.role === 'admin' && (
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin" className="cursor-pointer">
+                          <User className="mr-2 h-4 w-4" />
+                          Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <Link to="/login">
+                    <Button variant="ghost">Log in</Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button className="btn-gradient">Sign up</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-muted-foreground hover:text-foreground p-2"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-muted-foreground hover:text-foreground p-2"
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Side Drawer */}
       {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-card border-t border-border">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  isActivePath(link.path)
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            
-            {isAuthenticated ? (
-              <div className="pt-4 pb-3 border-t border-border space-y-2">
-                <div className="flex items-center px-3">
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src={user?.avatar}
-                    alt={user?.name}
-                  />
-                  <div className="ml-3">
-                    <div className="text-base font-medium">{user?.name}</div>
-                    <div className="text-sm text-muted-foreground">{user?.email}</div>
+        <>
+          {/* Backdrop */}
+          <div 
+            className="md:hidden fixed inset-0 bg-black/50 z-40"
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Side Drawer */}
+          <div className="md:hidden fixed right-0 top-0 h-full w-64 bg-card border-l border-border z-50 transform transition-transform duration-300 ease-in-out">
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-border">
+                <Link to="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
+                  <div className="w-32 h-32 lg:w-40 lg:h-40 flex items-center justify-center text-foreground">
+                    <img 
+                      src="/QuickCoWork_Logo_Transparent.svg" 
+                      alt="QuickCoWork Logo" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
-                </div>
-                <Link
-                  to="/dashboard"
-                  className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Dashboard
                 </Link>
-                {user?.role === 'admin' && (
-                  <Link
-                    to="/admin"
-                    className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Admin Panel
-                  </Link>
-                )}
                 <button
-                  onClick={() => {
-                    logout();
-                    setIsOpen(false);
-                  }}
-                  className="block w-full text-left px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
+                  onClick={() => setIsOpen(false)}
+                  className="text-muted-foreground hover:text-foreground p-1"
                 >
-                  Log out
+                  <X size={20} />
                 </button>
               </div>
-            ) : (
-              <div className="pt-4 pb-3 border-t border-border space-y-2">
-                <Link
-                  to="/login"
-                  className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sign up
-                </Link>
+
+              {/* Navigation Links */}
+              <div className="flex-1 p-4 space-y-2">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      isActivePath(link.path)
+                        ? 'text-primary bg-primary/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+                
+                {/* Theme Toggle in Mobile Menu */}
+                <div className="pt-2 border-t border-border">
+                  <div className="flex items-center justify-between px-3 py-2">
+                    <span className="text-sm font-medium text-muted-foreground">Theme</span>
+                    <ThemeToggle />
+                  </div>
+                </div>
               </div>
-            )}
+
+              {/* Auth Section */}
+              <div className="p-4 border-t border-border space-y-2">
+                {isAuthenticated ? (
+                  <>
+                    <div className="flex items-center px-3 py-2">
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={user?.avatar}
+                        alt={user?.name}
+                      />
+                      <div className="ml-3">
+                        <div className="text-sm font-medium">{user?.name}</div>
+                        <div className="text-xs text-muted-foreground">{user?.email}</div>
+                      </div>
+                    </div>
+                    <Link
+                      to="/dashboard"
+                      className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsOpen(false);
+                      }}
+                      className="block w-full text-left px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
+                    >
+                      Log out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Sign up
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </nav>
   );

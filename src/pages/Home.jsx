@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useSpaces } from '@/hooks/useSpaces';
 import SpaceCard from '@/components/SpaceCard';
-import heroImage from '@/assets/hero-image.jpg';
+import { useTheme } from '@/contexts/ThemeContext';
+
 
 const Home = () => {
   const { spaces } = useSpaces();
+  const { theme } = useTheme();
   const featuredSpaces = spaces.slice(0, 3);
 
   const categories = [
@@ -97,7 +99,7 @@ const Home = () => {
       <section className="hero-desktop section-elegant">
         <div className="hero-content">
           <div className="grid-hero">
-            <div className="space-desktop">
+            <div className="space-desktop text-center lg:text-left">
               <div className="space-y-8 lg:space-y-12">
                 <Badge className="badge-large animate-float">
                   🚀 Now serving 25+ cities across India
@@ -107,13 +109,25 @@ const Home = () => {
                   Commercial Spaces<br />
                   <span className="text-muted-foreground text-xl-desktop">by the hour</span>
                 </h1>
+                
+                {/* QuickCoWork Logo */}
+                <div className="flex items-center justify-center lg:justify-start mt-8 mb-6">
+                  <div className="w-[64px] h-[64px] lg:w-[80px] lg:h-[80px] flex items-center justify-center text-foreground">
+                    <img 
+                      src="/QuickCoWork_Logo_Transparent.svg" 
+                      alt="QuickCoWork Logo" 
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+                
                 <p className="text-lg-desktop text-muted-foreground leading-relaxed max-w-3xl">
                   Access professional offices, commercial kitchens, and creative studios 
                   without long-term commitments. Pay only for what you use.
                 </p>
               </div>
               
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+              <div className="flex flex-row gap-6 lg:gap-8 justify-center lg:justify-start">
                 <Link to="/browse">
                   <Button size="lg" className="btn-gradient">
                     <Search className="mr-3 h-6 w-6" />
@@ -128,10 +142,10 @@ const Home = () => {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 lg:pt-16">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 lg:pt-16 max-w-4xl mx-auto">
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center floating-card p-6 card-hover">
-                    <stat.icon className="icon-glow icon-large mx-auto mb-4" />
+                    <stat.icon className={`icon-glow icon-large mx-auto mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`} />
                     <div className="font-bold text-2xl lg:text-3xl text-foreground">{stat.value}</div>
                     <div className="text-sm lg:text-base text-muted-foreground">{stat.label}</div>
                   </div>
@@ -140,26 +154,175 @@ const Home = () => {
             </div>
             
             <div className="relative order-first lg:order-last">
-              <div className="floating-card-elegant p-4">
-                <img
-                  src={heroImage}
-                  alt="Modern shared workspace"
-                  className="rounded-3xl w-full h-[400px] lg:h-[500px] xl:h-[600px] object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-8 -left-8 floating-card p-6 animate-float">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center shadow-xl">
-                    <Clock className="w-8 h-8 text-white" />
+              <div className="floating-card-elegant p-8 text-center card-hover transition-all duration-500 hover:shadow-2xl">
+                <div className="w-24 h-24 lg:w-32 lg:h-32 mx-auto mb-6 bg-gradient-to-br from-primary to-accent rounded-3xl flex items-center justify-center shadow-2xl">
+                  <Building2 className="w-12 h-12 lg:w-16 lg:h-16 text-white" />
+                </div>
+                <h3 className="text-xl lg:text-2xl font-bold mb-3 text-foreground">
+                  Professional Spaces
+                </h3>
+                <p className="text-muted-foreground text-sm lg:text-base max-w-xs mx-auto">
+                  Access premium workspaces designed for productivity and collaboration
+                </p>
+                <div className="flex justify-center space-x-4 mt-6">
+                  <div className="flex items-center space-x-2 text-xs lg:text-sm text-muted-foreground">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>Available 24/7</span>
                   </div>
-                  <div>
-                    <div className="font-semibold text-foreground text-lg">Book in minutes</div>
-                    <div className="text-sm text-muted-foreground">Instant confirmation</div>
+                  <div className="flex items-center space-x-2 text-xs lg:text-sm text-muted-foreground">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>Instant Booking</span>
                   </div>
+                </div>
+                
+                {/* Floating Tiles Inside the Main Floating Card */}
+                <div className="grid grid-cols-2 gap-4 mt-8 max-w-md mx-auto">
+                  {[
+                    {
+                      title: "Smart Booking",
+                      description: "AI-powered recommendations",
+                      icon: Search,
+                      color: "from-blue-500 to-blue-600"
+                    },
+                    {
+                      title: "Secure Access",
+                      description: "Digital key management",
+                      icon: Shield,
+                      color: "from-green-500 to-green-600"
+                    },
+                    {
+                      title: "Real-time Analytics",
+                      description: "Usage insights & reports",
+                      icon: Users,
+                      color: "from-purple-500 to-purple-600"
+                    },
+                    {
+                      title: "24/7 Support",
+                      description: "Always here to help",
+                      icon: Clock,
+                      color: "from-orange-500 to-orange-600"
+                    }
+                  ].map((tile, index) => (
+                    <div 
+                      key={index} 
+                      className={`floating-card-elegant p-4 card-hover h-full transition-all duration-500 ${
+                        theme === 'dark' 
+                          ? 'hover:shadow-2xl hover:shadow-primary/20' 
+                          : 'hover:shadow-2xl hover:shadow-gray-200'
+                      }`}
+                    >
+                      <div className={`w-12 h-12 bg-gradient-to-r ${tile.color} rounded-xl flex items-center justify-center mb-3 transition-all duration-500 ${
+                        theme === 'dark' 
+                          ? 'filter-none' 
+                          : 'filter grayscale hover:filter-none'
+                      }`}>
+                        <tile.icon className={`w-6 h-6 transition-all duration-500 ${
+                          theme === 'dark' 
+                            ? 'text-white' 
+                            : 'text-gray-800'
+                        }`} />
+                      </div>
+                      <h3 className="text-sm font-bold mb-1 text-foreground">
+                        {tile.title}
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        {tile.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Floating Tiles Section */}
+      <section className="py-16 relative overflow-hidden">
+        <div className="container-desktop">
+          <div className="text-center mb-12">
+            <h2 className="heading-lg mb-4">
+              <span className="gradient-text">Floating</span> Features
+            </h2>
+            <p className="text-lg-desktop text-muted-foreground max-w-2xl mx-auto">
+              Discover our dynamic floating tiles that adapt to your theme preference
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
+            {[
+              {
+                title: "Smart Booking",
+                description: "AI-powered recommendations",
+                icon: Search,
+                color: "from-blue-500 to-blue-600"
+              },
+              {
+                title: "Secure Access",
+                description: "Digital key management",
+                icon: Shield,
+                color: "from-green-500 to-green-600"
+              },
+              {
+                title: "Real-time Analytics",
+                description: "Usage insights & reports",
+                icon: Users,
+                color: "from-purple-500 to-purple-600"
+              },
+              {
+                title: "24/7 Support",
+                description: "Always here to help",
+                icon: Clock,
+                color: "from-orange-500 to-orange-600"
+              }
+            ].map((tile, index) => (
+              <div 
+                key={index} 
+                className={`floating-card-elegant p-6 card-hover h-full transition-all duration-500 ${
+                  theme === 'dark' 
+                    ? 'hover:shadow-2xl hover:shadow-primary/20' 
+                    : 'hover:shadow-2xl hover:shadow-gray-200'
+                }`}
+              >
+                <div className={`w-16 h-16 bg-gradient-to-r ${tile.color} rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 ${
+                  theme === 'dark' 
+                    ? 'filter-none' 
+                    : 'filter grayscale hover:filter-none'
+                }`}>
+                  <tile.icon className={`w-8 h-8 transition-all duration-500 ${
+                    theme === 'dark' 
+                      ? 'text-white' 
+                      : 'text-gray-800'
+                  }`} />
+                </div>
+                <h3 className="text-lg font-bold mb-2 text-foreground">
+                  {tile.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {tile.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Background floating elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className={`absolute top-20 left-10 w-20 h-20 rounded-full transition-all duration-1000 ${
+            theme === 'dark' 
+              ? 'bg-primary/10 animate-pulse' 
+              : 'bg-gray-200/50'
+          }`}></div>
+          <div className={`absolute top-40 right-20 w-16 h-16 rounded-full transition-all duration-1000 delay-300 ${
+            theme === 'dark' 
+              ? 'bg-accent/10 animate-pulse' 
+              : 'bg-gray-300/50'
+          }`}></div>
+          <div className={`absolute bottom-20 left-1/4 w-12 h-12 rounded-full transition-all duration-1000 delay-500 ${
+            theme === 'dark' 
+              ? 'bg-primary/5 animate-pulse' 
+              : 'bg-gray-100/50'
+          }`}></div>
         </div>
       </section>
 
@@ -176,30 +339,30 @@ const Home = () => {
             </p>
           </div>
           
-          <div className="grid-desktop">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
             {categories.map((category, index) => (
               <Link 
                 key={index} 
                 to={`/browse?type=${category.type}`}
                 className="group"
               >
-                <div className="floating-card-elegant p-8 card-hover h-full">
-                  <div className={`w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r ${category.color} rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-xl`}>
-                    <category.icon className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
+                <div className="floating-card-elegant p-6 card-hover h-full">
+                  <div className={`w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-xl`}>
+                    <category.icon className={`w-6 h-6 lg:w-7 lg:h-7 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`} />
                   </div>
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xl lg:text-2xl font-bold group-hover:text-primary transition-colors">
+                      <h3 className="text-lg lg:text-xl font-bold group-hover:text-primary transition-colors">
                         {category.name}
                       </h3>
                       <Badge className="badge-elegant">{category.count}</Badge>
                     </div>
-                    <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
+                    <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">
                       {category.description}
                     </p>
-                    <div className="flex items-center text-primary font-semibold pt-4">
+                    <div className="flex items-center text-primary font-semibold pt-3">
                       Browse spaces
-                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-3 transition-transform" />
+                      <ArrowRight className={`ml-2 h-4 w-4 group-hover:translate-x-2 transition-transform ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`} />
                     </div>
                   </div>
                 </div>
@@ -211,7 +374,7 @@ const Home = () => {
 
       {/* How It Works Section */}
       <section className="py-8 sm:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container-desktop">
           <div className="text-center mb-6 sm:mb-8">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
               How <span className="gradient-text">It Works</span>
@@ -221,7 +384,7 @@ const Home = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto">
             {steps.map((step, index) => (
               <div key={index} className="text-center relative">
                 {index < steps.length - 1 && (
@@ -240,7 +403,7 @@ const Home = () => {
 
       {/* Featured Spaces Section */}
       <section className="py-8 sm:py-12 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container-desktop">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4">
@@ -253,14 +416,16 @@ const Home = () => {
             <Link to="/browse">
               <Button variant="outline" className="hidden sm:flex text-sm">
                 View All Spaces
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className={`ml-2 h-4 w-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`} />
               </Button>
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="flex flex-row gap-4 sm:gap-6 overflow-x-auto pb-4 max-w-6xl mx-auto">
             {featuredSpaces.map((space) => (
-              <SpaceCard key={space.id} space={space} />
+              <div key={space.id} className="flex-shrink-0 w-80 sm:w-96">
+                <SpaceCard space={space} />
+              </div>
             ))}
           </div>
           
@@ -268,7 +433,7 @@ const Home = () => {
             <Link to="/browse">
               <Button variant="outline" className="text-sm">
                 View All Spaces
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className={`ml-2 h-4 w-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`} />
               </Button>
             </Link>
           </div>
@@ -328,14 +493,14 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link to="/browse">
               <Button size="lg" variant="secondary" className="w-full sm:w-auto text-sm sm:text-base">
-                <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <Search className={`mr-2 h-4 w-4 sm:h-5 sm:w-5 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`} />
                 Browse Spaces
               </Button>
             </Link>
             <Link to="/list-space">
               <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20 text-sm sm:text-base">
                 List Your Space
-                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </Button>
             </Link>
           </div>

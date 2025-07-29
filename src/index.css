@@ -259,7 +259,7 @@
   }
   
   .container-desktop {
-    @apply max-w-7xl mx-auto px-8 lg:px-12 xl:px-16;
+    @apply max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 text-center;
   }
   
   /* Desktop-First Badge Styles */
@@ -333,7 +333,7 @@
   }
   
   .nav-container {
-    @apply max-w-7xl mx-auto px-8 lg:px-12 xl:px-16;
+    @apply max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 flex items-center justify-between;
   }
   
   /* Desktop-First Hero Section */
@@ -342,7 +342,7 @@
   }
   
   .hero-content {
-    @apply max-w-7xl mx-auto px-8 lg:px-12 xl:px-16;
+    @apply max-w-7xl mx-auto px-8 lg:px-12 xl:px-16 flex items-center justify-center;
   }
   
   /* Desktop-First Footer */

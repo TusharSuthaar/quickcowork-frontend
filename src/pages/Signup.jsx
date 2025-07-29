@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Building2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,6 +16,23 @@ const Signup = () => {
     confirmPassword: '',
     role: 'renter'
   });
+  
+  const roles = [
+    {
+      id: 'renter',
+      title: 'Space Renter',
+      description: 'I want to rent and book spaces',
+      icon: Users,
+      features: ['Browse and book spaces', 'Manage your bookings', 'Access to all space types', 'Flexible hourly rentals']
+    },
+    {
+      id: 'owner',
+      title: 'Space Owner',
+      description: 'I want to list and manage my spaces',
+      icon: Building2,
+      features: ['List your spaces', 'Manage bookings', 'Earn from rentals', 'Analytics dashboard']
+    }
+  ];
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { signup, loading } = useAuth();
@@ -60,8 +78,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="floating-container">
-      <div className="floating-card-elegant w-full max-w-lg lg:max-w-xl p-12 lg:p-16 space-y-8 lg:space-y-12">
+    <div className="floating-card-elegant w-full p-8 space-y-6">
         <div className="text-center space-y-4">
           <h1 className="heading-md gradient-text">Create account</h1>
           <p className="text-lg-desktop text-muted-foreground">
@@ -148,17 +165,45 @@ const Signup = () => {
             </div>
           </div>
 
-          <div className="space-y-1">
-            <Label htmlFor="role" className="text-sm">I want to</Label>
-            <select
-              id="role"
-              className="w-full h-9 px-2 text-sm border border-input rounded-md bg-background"
-              value={formData.role}
-              onChange={(e) => setFormData({...formData, role: e.target.value})}
-            >
-              <option value="renter">Rent spaces</option>
-              <option value="owner">List my spaces</option>
-            </select>
+          <div className="space-y-3">
+            <Label className="text-sm">Choose your role</Label>
+            <div className="grid grid-cols-1 gap-3">
+              {roles.map((role) => (
+                <Card 
+                  key={role.id}
+                  className={`cursor-pointer transition-all hover:shadow-md ${
+                    formData.role === role.id 
+                      ? 'ring-2 ring-primary bg-primary/5' 
+                      : 'hover:bg-muted/50'
+                  }`}
+                  onClick={() => setFormData({...formData, role: role.id})}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start space-x-3">
+                      <div className={`p-2 rounded-lg ${
+                        formData.role === role.id 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'bg-muted'
+                      }`}>
+                        <role.icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm">{role.title}</h3>
+                        <p className="text-xs text-muted-foreground mt-1">{role.description}</p>
+                        <ul className="mt-2 space-y-1">
+                          {role.features.map((feature, index) => (
+                            <li key={index} className="text-xs text-muted-foreground flex items-center">
+                              <span className="w-1 h-1 bg-primary rounded-full mr-2"></span>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
 
           <div className="flex items-start space-x-1.5 text-xs">
@@ -223,7 +268,6 @@ const Signup = () => {
           </Link>
         </p>
       </div>
-    </div>
   );
 };
 

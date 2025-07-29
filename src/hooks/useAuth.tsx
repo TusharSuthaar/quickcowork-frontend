@@ -1,4 +1,13 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  User as FirebaseUser
+} from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 
 interface User {
   id: string;
@@ -6,6 +15,7 @@ interface User {
   role: 'owner' | 'renter' | 'admin';
   name: string;
   avatar: string;
+  uid?: string;
 }
 
 interface AuthContextType {
@@ -35,58 +45,151 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in from localStorage
-    const storedUser = localStorage.getItem('quickcowork_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      if (firebaseUser) {
+        try {
+          // Get user data from Firestore
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              id: firebaseUser.uid,
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              role: userData.role || 'renter',
+              name: userData.name || firebaseUser.email?.split('@')[0] || '',
+              avatar: userData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${firebaseUser.email}`
+            });
+          } else {
+            // Create user document if it doesn't exist
+            const newUser: User = {
+              id: firebaseUser.uid,
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              role: 'renter',
+              name: firebaseUser.email?.split('@')[0] || '',
+              avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${firebaseUser.email}`
+            };
+            await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
+            setUser(newUser);
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const login = async (email: string, password: string, role: 'owner' | 'renter' | 'admin' = 'renter') => {
     setLoading(true);
     
-    // Mock login - in real app, this would be an API call
-    setTimeout(() => {
-      const mockUser: User = {
-        id: '1',
-        email,
-        role,
-        name: email.split('@')[0],
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
-      };
+    try {
+      // Firebase authentication
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
       
-      setUser(mockUser);
-      localStorage.setItem('quickcowork_user', JSON.stringify(mockUser));
+      // Get or create user document in Firestore
+      const userDocRef = doc(db, 'users', firebaseUser.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const user: User = {
+          id: firebaseUser.uid,
+          uid: firebaseUser.uid,
+          email: firebaseUser.email || '',
+          role: userData.role || role,
+          name: userData.name || firebaseUser.email?.split('@')[0] || '',
+          avatar: userData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${firebaseUser.email}`
+        };
+        setUser(user);
+        console.log('Login successful:', user);
+      } else {
+        // Create new user document
+        const newUser: User = {
+          id: firebaseUser.uid,
+          uid: firebaseUser.uid,
+          email: firebaseUser.email || '',
+          role,
+          name: firebaseUser.email?.split('@')[0] || '',
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${firebaseUser.email}`
+        };
+        await setDoc(userDocRef, newUser);
+        setUser(newUser);
+        console.log('New user created:', newUser);
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      let errorMessage = 'Login failed. Please try again.';
+      
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email address.';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password. Please try again.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address.';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many failed attempts. Please try again later.';
+      }
+      
+      throw new Error(errorMessage);
+    } finally {
       setLoading(false);
-      console.log('Login successful:', mockUser);
-    }, 1000);
+    }
   };
 
   const signup = async (email: string, password: string, role: 'owner' | 'renter' | 'admin' = 'renter', name?: string) => {
     setLoading(true);
     
-    // Mock signup - in real app, this would be an API call
-    setTimeout(() => {
-      const mockUser: User = {
-        id: Date.now().toString(),
-        email,
+    try {
+      // Firebase authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const firebaseUser = userCredential.user;
+      
+      // Create user document in Firestore
+      const newUser: User = {
+        id: firebaseUser.uid,
+        uid: firebaseUser.uid,
+        email: firebaseUser.email || '',
         role,
-        name: name || email.split('@')[0],
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
+        name: name || firebaseUser.email?.split('@')[0] || '',
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${firebaseUser.email}`
       };
       
-      setUser(mockUser);
-      localStorage.setItem('quickcowork_user', JSON.stringify(mockUser));
+      await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
+      setUser(newUser);
+      console.log('Signup successful:', newUser);
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      let errorMessage = 'Signup failed. Please try again.';
+      
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'An account with this email already exists.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password should be at least 6 characters long.';
+      }
+      
+      throw new Error(errorMessage);
+    } finally {
       setLoading(false);
-      console.log('Signup successful:', mockUser);
-    }, 1000);
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('quickcowork_user');
-    console.log('Logout successful');
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      console.log('Logout successful');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const value = {

@@ -20,7 +20,13 @@ const AuthLayout = ({ children, requireAuth = true, redirectTo = '/login' }) => 
     return <Navigate to="/dashboard" replace />;
   }
 
-  return children;
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/20">
+      <div className="w-full max-w-md mx-auto px-4">
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default AuthLayout;

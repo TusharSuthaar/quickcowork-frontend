@@ -14,6 +14,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { callGeminiAPI, getAPIStatus } from '@/services/geminiService';
+import { saveMessage, getChatHistory, saveUserSession } from '@/services/firebaseService';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,10 @@ const Chatbot = () => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [userId] = useState(() => {
+    // Generate a unique user ID for this session
+    return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  });
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -49,7 +54,8 @@ const Chatbot = () => {
       id: messages.length + 1,
       type: 'user',
       content: inputValue,
-      timestamp: new Date()
+      timestamp: new Date(),
+      userId: userId
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -57,6 +63,9 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
+      // Save user message to Firebase
+      await saveMessage(userMessage);
+      
       console.log('Sending message to Gemini API:', inputValue);
       console.log('API Status:', apiStatus);
       
@@ -67,8 +76,12 @@ const Chatbot = () => {
         id: messages.length + 2,
         type: 'bot',
         content: botResponse,
-        timestamp: new Date()
+        timestamp: new Date(),
+        userId: userId
       };
+
+      // Save bot message to Firebase
+      await saveMessage(botMessage);
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
@@ -77,8 +90,17 @@ const Chatbot = () => {
         id: messages.length + 2,
         type: 'bot',
         content: "I apologize, but I'm having trouble processing your request right now. Please try again in a moment.",
-        timestamp: new Date()
+        timestamp: new Date(),
+        userId: userId
       };
+      
+      // Save error message to Firebase
+      try {
+        await saveMessage(errorMessage);
+      } catch (firebaseError) {
+        console.error('Error saving to Firebase:', firebaseError);
+      }
+      
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
@@ -92,7 +114,19 @@ const Chatbot = () => {
     }
   };
 
-  const toggleChat = () => {
+  const toggleChat = async () => {
+    if (!isOpen) {
+      // Load chat history when opening
+      try {
+        const chatHistory = await getChatHistory(userId, 20);
+        if (chatHistory.length > 0) {
+          setMessages(chatHistory);
+        }
+      } catch (error) {
+        console.error('Error loading chat history:', error);
+      }
+    }
+    
     setIsOpen(!isOpen);
     if (!isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -103,24 +137,26 @@ const Chatbot = () => {
     setIsMinimized(!isMinimized);
   };
 
-  return (
+      return (
     <>
       {/* Chat Toggle Button */}
-      <div className="fixed bottom-8 right-8 z-[9999] pointer-events-auto">
+      <div className="fixed bottom-8 right-8 z-[9999] pointer-events-auto" style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 9999 }}>
         <Button
           onClick={toggleChat}
           className="btn-gradient w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl animate-pulse-glow hover:scale-110 transition-transform duration-300"
+          style={{ backgroundColor: '#8b5cf6', border: '2px solid white' }}
         >
-          <MessageCircle className="w-8 h-8" />
+          <MessageCircle className="w-8 h-8 text-white" />
         </Button>
       </div>
 
-            {/* Chat Window */}
+      {/* Chat Window */}
       {isOpen && (
         <>
-          {/* Backdrop to prevent interaction with main content */}
-          <div className="fixed inset-0 z-[9998] pointer-events-none" />
-          <div className="fixed bottom-24 right-8 z-[9999] w-96 lg:w-[450px] xl:w-[500px] pointer-events-auto max-h-[80vh]">
+          {/* Backdrop */}
+          <div className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm" />
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            <div className="w-full max-w-2xl lg:max-w-3xl xl:max-w-4xl max-h-[90vh]">
             <Card className="floating-card-elegant overflow-hidden h-full">
               {/* Header */}
               <div className="bg-gradient-to-r from-primary to-accent p-6 text-white flex-shrink-0">
@@ -259,6 +295,7 @@ const Chatbot = () => {
             )}
           </Card>
         </div>
+      </div>
         </>
       )}
     </>
