@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Chatbot from "./components/Chatbot";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -69,6 +70,7 @@ const App = () => (
               </Routes>
             </main>
             <Footer />
+            <Chatbot />
           </div>
         </BrowserRouter>
       </TooltipProvider>
