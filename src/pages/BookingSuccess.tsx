@@ -76,7 +76,7 @@ const BookingSuccess = () => {
             <div className="space-y-6">
               {/* Space Info */}
               <div className="flex flex-col md:flex-row gap-4">
-                <div className="w-full md:w-32 h-24 bg-muted rounded-lg overflow-hidden">
+                <div className="w-full md:w-32 h-24 md:h-28 bg-muted rounded-lg overflow-hidden">
                   <img
                     src={space.images?.[0] || 'https://via.placeholder.com/300x200'}
                     alt={space.title}

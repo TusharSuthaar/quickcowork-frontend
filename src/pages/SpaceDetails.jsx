@@ -85,7 +85,7 @@ const SpaceDetails = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Image Gallery */}
             <div className="relative">
-              <div className="aspect-video rounded-2xl overflow-hidden">
+              <div className="aspect-[16/10] sm:aspect-[16/9] lg:aspect-video rounded-2xl overflow-hidden">
                 <img
                   src={space.images[currentImageIndex]}
                   alt={space.title}

@@ -189,7 +189,7 @@ const Dashboard = () => {
                     <Card key={listing.id}>
                       <CardContent className="p-6">
                         <div className="flex flex-col md:flex-row gap-4">
-                          <div className="w-full md:w-48 h-32 bg-muted rounded-lg flex items-center justify-center">
+                          <div className="w-full md:w-48 h-32 md:h-40 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
                             {listing.images && listing.images[0] ? (
                               <img
                                 src={listing.images[0]}
@@ -257,7 +257,7 @@ const Dashboard = () => {
                 <Card key={booking.id}>
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row gap-4">
-                      <div className="w-full md:w-48 h-32 bg-muted rounded-lg overflow-hidden">
+                      <div className="w-full md:w-48 h-32 md:h-40 bg-muted rounded-lg overflow-hidden">
                         <img
                           src={booking.spaceImage}
                           alt={booking.spaceTitle}

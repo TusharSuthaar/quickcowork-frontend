@@ -25,15 +25,15 @@ const Navbar = () => {
   const isActivePath = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-card border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-card/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+    <nav className="nav-desktop">
+      <div className="nav-container">
+        <div className="flex justify-between h-20 lg:h-24">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-white" />
+            <Link to="/" className="flex items-center space-x-4 group">
+              <div className="w-12 h-12 lg:w-14 lg:h-14 bg-gradient-to-r from-primary to-accent rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                <MapPin className="w-7 h-7 lg:w-8 lg:h-8 text-white" />
               </div>
-              <span className="text-xl font-bold gradient-text">QuickCoWork</span>
+              <span className="text-2xl lg:text-3xl font-bold gradient-text">QuickCoWork</span>
             </Link>
           </div>
 

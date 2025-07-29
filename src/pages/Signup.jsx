@@ -61,15 +61,16 @@ const Signup = () => {
 
   return (
     <div className="floating-container">
-      <div className="floating-card w-full max-w-sm p-6 space-y-4">
-        <div className="text-center space-y-1">
-          <h1 className="text-2xl font-bold">Create account</h1>
-          <p className="text-muted-foreground text-sm">
+      <div className="floating-card-elegant w-full max-w-lg lg:max-w-xl p-12 lg:p-16 space-y-8 lg:space-y-12">
+        <div className="text-center space-y-4">
+          <h1 className="heading-md gradient-text">Create account</h1>
+          <p className="text-lg-desktop text-muted-foreground">
             Join QuickCoWork and start your journey
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1">
             <Label htmlFor="name" className="text-sm">Full Name</Label>
             <div className="relative">
               <User className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />

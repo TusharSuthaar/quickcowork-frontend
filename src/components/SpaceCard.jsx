@@ -46,13 +46,13 @@ const SpaceCard = ({ space, className }) => {
 
   return (
     <Link to={`/space/${space.id}`}>
-      <div className={cn("group floating-card card-hover", className)}>
+      <div className={cn("group floating-card-elegant card-hover", className)}>
         {/* Image Section */}
-        <div className="relative h-36 overflow-hidden">
+        <div className="relative h-40 sm:h-48 md:h-52 lg:h-56 overflow-hidden rounded-t-3xl">
           <img
             src={space.images[currentImageIndex]}
             alt={space.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           
           {/* Image Navigation */}
@@ -101,51 +101,51 @@ const SpaceCard = ({ space, className }) => {
           </button>
 
           {/* Type Badge */}
-          <div className="absolute top-3 left-3">
-            <Badge className={getTypeColor(space.type)} variant="secondary">
+          <div className="absolute top-4 left-4">
+            <Badge className="badge-elegant">
               {space.type.charAt(0).toUpperCase() + space.type.slice(1)}
             </Badge>
           </div>
         </div>
 
         {/* Content Section */}
-        <div className="p-3 space-y-2">
+        <div className="p-6 lg:p-8 space-y-4">
           {/* Title and Rating */}
           <div className="flex justify-between items-start">
-            <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-1">
+            <h3 className="font-semibold text-lg lg:text-xl text-foreground group-hover:text-primary transition-colors line-clamp-1">
               {space.title}
             </h3>
-            <div className="flex items-center space-x-1 text-xs">
-              <Star size={12} className="fill-yellow-400 text-yellow-400" />
-              <span className="text-muted-foreground">{space.rating}</span>
+            <div className="flex items-center space-x-2 text-sm">
+              <Star size={16} className="fill-yellow-400 text-yellow-400" />
+              <span className="text-muted-foreground text-sm">{space.rating}</span>
             </div>
           </div>
 
           {/* Location */}
-          <div className="flex items-center space-x-1 text-muted-foreground text-xs">
-            <MapPin size={12} />
+          <div className="flex items-center space-x-2 text-muted-foreground text-sm">
+            <MapPin size={16} />
             <span>{space.location}</span>
           </div>
 
           {/* Capacity and Amenities */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <div className="flex items-center space-x-1">
-              <Users size={12} />
-              <span>Up to {space.capacity} people</span>
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="flex items-center space-x-2">
+              <Users size={16} />
+              <span className="text-sm">Up to {space.capacity} people</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <Clock size={12} />
-              <span>{space.availability?.length || 0} slots</span>
+            <div className="flex items-center space-x-2">
+              <Clock size={16} />
+              <span className="text-sm">{space.availability?.length || 0} slots</span>
             </div>
           </div>
 
           {/* Price and CTA */}
-          <div className="flex justify-between items-center pt-1">
+          <div className="flex justify-between items-center pt-4">
             <div>
-              <span className="text-base font-bold text-foreground">₹{space.price}</span>
-              <span className="text-xs text-muted-foreground">/hour</span>
+              <span className="text-xl lg:text-2xl font-bold text-foreground">₹{space.price}</span>
+              <span className="text-sm text-muted-foreground">/hour</span>
             </div>
-            <Button size="sm" className="compact-button btn-gradient text-xs">
+            <Button size="sm" className="button-desktop btn-gradient">
               Book Now
             </Button>
           </div>

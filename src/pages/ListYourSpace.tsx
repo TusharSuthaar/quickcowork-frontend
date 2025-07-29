@@ -314,7 +314,7 @@ const ListYourSpace = () => {
                         <img
                           src={image}
                           alt={`Space ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg"
+                          className="w-full h-32 md:h-40 object-cover rounded-lg"
                         />
                         <button
                           type="button"

@@ -94,65 +94,66 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-background"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <Badge className="bg-accent/10 text-accent border-accent/20">
+      <section className="hero-desktop section-elegant">
+        <div className="hero-content">
+          <div className="grid-hero">
+            <div className="space-desktop">
+              <div className="space-y-8 lg:space-y-12">
+                <Badge className="badge-large animate-float">
                   🚀 Now serving 25+ cities across India
                 </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                <h1 className="heading-xl">
                   <span className="gradient-text">Rent Shared</span><br />
                   Commercial Spaces<br />
-                  <span className="text-muted-foreground text-2xl lg:text-3xl">by the hour</span>
+                  <span className="text-muted-foreground text-xl-desktop">by the hour</span>
                 </h1>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-lg-desktop text-muted-foreground leading-relaxed max-w-3xl">
                   Access professional offices, commercial kitchens, and creative studios 
                   without long-term commitments. Pay only for what you use.
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
                 <Link to="/browse">
-                  <Button size="lg" className="btn-gradient w-full sm:w-auto">
-                    <Search className="mr-2 h-5 w-5" />
+                  <Button size="lg" className="btn-gradient">
+                    <Search className="mr-3 h-6 w-6" />
                     Find a Space
                   </Button>
                 </Link>
                 <Link to="/list-space">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                  <Button size="lg" className="btn-outline-beautiful">
                     List Your Space
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-3 h-6 w-6" />
                   </Button>
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pt-12 lg:pt-16">
                 {stats.map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <stat.icon className="w-6 h-6 mx-auto mb-2 text-primary" />
-                    <div className="font-bold text-xl text-foreground">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div key={index} className="text-center floating-card p-6 card-hover">
+                    <stat.icon className="icon-glow icon-large mx-auto mb-4" />
+                    <div className="font-bold text-2xl lg:text-3xl text-foreground">{stat.value}</div>
+                    <div className="text-sm lg:text-base text-muted-foreground">{stat.label}</div>
                   </div>
                 ))}
               </div>
             </div>
             
-            <div className="relative">
-              <img
-                src={heroImage}
-                alt="Modern shared workspace"
-                className="rounded-2xl shadow-2xl w-full h-[500px] object-cover"
-              />
-              <div className="absolute -bottom-4 -left-4 floating-card p-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-white" />
+            <div className="relative order-first lg:order-last">
+              <div className="floating-card-elegant p-4">
+                <img
+                  src={heroImage}
+                  alt="Modern shared workspace"
+                  className="rounded-3xl w-full h-[400px] lg:h-[500px] xl:h-[600px] object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-8 -left-8 floating-card p-6 animate-float">
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center shadow-xl">
+                    <Clock className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <div className="font-semibold text-foreground">Book in minutes</div>
+                    <div className="font-semibold text-foreground text-lg">Book in minutes</div>
                     <div className="text-sm text-muted-foreground">Instant confirmation</div>
                   </div>
                 </div>
@@ -163,42 +164,42 @@ const Home = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+      <section className="section-elegant section-padding">
+        <div className="container-desktop">
+          <div className="text-center margin-desktop">
+            <h2 className="heading-lg mb-6 lg:mb-8">
               Find Your Perfect <span className="gradient-text">Space</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg-desktop text-muted-foreground max-w-4xl mx-auto">
               Whether you need a professional office, commercial kitchen, or creative studio, 
               we have the perfect space for your business needs.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid-desktop">
             {categories.map((category, index) => (
               <Link 
                 key={index} 
                 to={`/browse?type=${category.type}`}
                 className="group"
               >
-                <div className="floating-card p-6 card-hover h-full">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <category.icon className="w-8 h-8 text-white" />
+                <div className="floating-card-elegant p-8 card-hover h-full">
+                  <div className={`w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r ${category.color} rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-xl`}>
+                    <category.icon className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
+                      <h3 className="text-xl lg:text-2xl font-bold group-hover:text-primary transition-colors">
                         {category.name}
                       </h3>
-                      <Badge variant="secondary">{category.count}</Badge>
+                      <Badge className="badge-elegant">{category.count}</Badge>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
                       {category.description}
                     </p>
-                    <div className="flex items-center text-primary font-medium pt-2">
+                    <div className="flex items-center text-primary font-semibold pt-4">
                       Browse spaces
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-3 transition-transform" />
                     </div>
                   </div>
                 </div>
@@ -209,28 +210,28 @@ const Home = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16">
+      <section className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
               How <span className="gradient-text">It Works</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               Get started in just a few simple steps and access professional spaces instantly.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {steps.map((step, index) => (
               <div key={index} className="text-center relative">
                 {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-primary to-accent transform translate-x-2"></div>
+                  <div className="hidden sm:block absolute top-6 left-full w-full h-0.5 bg-gradient-to-r from-primary to-accent transform translate-x-2"></div>
                 )}
-                <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-lg mb-4">
+                <div className="relative inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-sm sm:text-base mb-3">
                   {step.number}
                 </div>
-                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
+                <h3 className="text-base sm:text-lg font-bold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground text-xs sm:text-sm">{step.description}</p>
               </div>
             ))}
           </div>
@@ -238,34 +239,34 @@ const Home = () => {
       </section>
 
       {/* Featured Spaces Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-8 sm:py-12 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4">
                 <span className="gradient-text">Featured</span> Spaces
               </h2>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
                 Discover our most popular and highly-rated spaces
               </p>
             </div>
             <Link to="/browse">
-              <Button variant="outline" className="hidden sm:flex">
+              <Button variant="outline" className="hidden sm:flex text-sm">
                 View All Spaces
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {featuredSpaces.map((space) => (
               <SpaceCard key={space.id} space={space} />
             ))}
           </div>
           
-          <div className="text-center mt-8 sm:hidden">
+          <div className="text-center mt-6 sm:hidden">
             <Link to="/browse">
-              <Button variant="outline">
+              <Button variant="outline" className="text-sm">
                 View All Spaces
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -275,37 +276,37 @@ const Home = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16">
+      <section className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
               What Our <span className="gradient-text">Users Say</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
               Hear from entrepreneurs, freelancers, and creators who've grown their businesses with QuickCoWork.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="floating-card p-4 card-hover">
-                <div className="flex items-center space-x-1 mb-4">
+              <div key={index} className="floating-card p-4 sm:p-5 card-hover">
+                <div className="flex items-center space-x-1 mb-3">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                    <Star key={i} size={12} className="fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className="text-muted-foreground mb-4 leading-relaxed text-xs sm:text-sm">
                   "{testimonial.content}"
                 </p>
                 <div className="flex items-center space-x-3">
                   <img
                     src={testimonial.avatar}
                     alt={testimonial.name}
-                    className="w-10 h-10 rounded-full"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full"
                   />
                   <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                    <div className="font-semibold text-xs sm:text-sm">{testimonial.name}</div>
+                    <div className="text-xs text-muted-foreground">{testimonial.role}</div>
                   </div>
                 </div>
               </div>
@@ -315,26 +316,26 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-primary to-accent">
+      <section className="py-8 sm:py-12 bg-gradient-to-r from-primary to-accent">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
             Ready to Find Your Perfect Space?
           </h2>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Join thousands of entrepreneurs, freelancers, and creators who trust QuickCoWork 
             for their space needs. Start your journey today.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link to="/browse">
-              <Button size="lg" variant="secondary" className="w-full sm:w-auto">
-                <Search className="mr-2 h-5 w-5" />
+              <Button size="lg" variant="secondary" className="w-full sm:w-auto text-sm sm:text-base">
+                <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Browse Spaces
               </Button>
             </Link>
             <Link to="/list-space">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/10 border-white/20 text-white hover:bg-white/20 text-sm sm:text-base">
                 List Your Space
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </Link>
           </div>
