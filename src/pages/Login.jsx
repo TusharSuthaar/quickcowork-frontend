@@ -19,7 +19,7 @@ const Login = () => {
     {
       id: 'renter',
       title: 'Space Renter',
-      description: 'Access to book and manage spaces',
+      description: 'Browse and book spaces',
       icon: Users,
       color: 'from-blue-500 to-blue-600'
     },
@@ -29,13 +29,6 @@ const Login = () => {
       description: 'Manage your listed spaces',
       icon: Building2,
       color: 'from-green-500 to-green-600'
-    },
-    {
-      id: 'admin',
-      title: 'Administrator',
-      description: 'Platform management and oversight',
-      icon: Shield,
-      color: 'from-purple-500 to-purple-600'
     }
   ];
   const [showPassword, setShowPassword] = useState(false);
