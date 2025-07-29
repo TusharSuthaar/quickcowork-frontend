@@ -146,7 +146,7 @@ const Home = () => {
                 alt="Modern shared workspace"
                 className="rounded-2xl shadow-2xl w-full h-[500px] object-cover"
               />
-              <div className="absolute -bottom-4 -left-4 bg-card p-4 rounded-xl shadow-lg border border-border">
+              <div className="absolute -bottom-4 -left-4 floating-card p-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
                     <Clock className="w-5 h-5 text-white" />
@@ -182,7 +182,7 @@ const Home = () => {
                 to={`/browse?type=${category.type}`}
                 className="group"
               >
-                <div className="bg-card rounded-2xl p-8 border border-border card-hover h-full">
+                <div className="floating-card p-6 card-hover h-full">
                   <div className={`w-16 h-16 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                     <category.icon className="w-8 h-8 text-white" />
                   </div>
@@ -288,7 +288,7 @@ const Home = () => {
           
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-card rounded-2xl p-6 border border-border card-hover">
+              <div key={index} className="floating-card p-4 card-hover">
                 <div className="flex items-center space-x-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />

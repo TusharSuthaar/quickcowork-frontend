@@ -46,9 +46,9 @@ const SpaceCard = ({ space, className }) => {
 
   return (
     <Link to={`/space/${space.id}`}>
-      <div className={cn("group bg-card rounded-xl overflow-hidden border border-border card-hover", className)}>
+      <div className={cn("group floating-card card-hover", className)}>
         {/* Image Section */}
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-36 overflow-hidden">
           <img
             src={space.images[currentImageIndex]}
             alt={space.title}
@@ -109,43 +109,43 @@ const SpaceCard = ({ space, className }) => {
         </div>
 
         {/* Content Section */}
-        <div className="p-4 space-y-3">
+        <div className="p-3 space-y-2">
           {/* Title and Rating */}
           <div className="flex justify-between items-start">
-            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+            <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors line-clamp-1">
               {space.title}
             </h3>
-            <div className="flex items-center space-x-1 text-sm">
-              <Star size={14} className="fill-yellow-400 text-yellow-400" />
+            <div className="flex items-center space-x-1 text-xs">
+              <Star size={12} className="fill-yellow-400 text-yellow-400" />
               <span className="text-muted-foreground">{space.rating}</span>
             </div>
           </div>
 
           {/* Location */}
-          <div className="flex items-center space-x-1 text-muted-foreground text-sm">
-            <MapPin size={14} />
+          <div className="flex items-center space-x-1 text-muted-foreground text-xs">
+            <MapPin size={12} />
             <span>{space.location}</span>
           </div>
 
           {/* Capacity and Amenities */}
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
             <div className="flex items-center space-x-1">
-              <Users size={14} />
+              <Users size={12} />
               <span>Up to {space.capacity} people</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Clock size={14} />
+              <Clock size={12} />
               <span>{space.availability?.length || 0} slots</span>
             </div>
           </div>
 
           {/* Price and CTA */}
-          <div className="flex justify-between items-center pt-2">
+          <div className="flex justify-between items-center pt-1">
             <div>
-              <span className="text-lg font-bold text-foreground">₹{space.price}</span>
-              <span className="text-sm text-muted-foreground">/hour</span>
+              <span className="text-base font-bold text-foreground">₹{space.price}</span>
+              <span className="text-xs text-muted-foreground">/hour</span>
             </div>
-            <Button size="sm" className="btn-gradient">
+            <Button size="sm" className="compact-button btn-gradient text-xs">
               Book Now
             </Button>
           </div>

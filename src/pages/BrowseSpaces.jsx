@@ -83,7 +83,7 @@ const BrowseSpaces = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card border-b border-border">
+      <div className="floating-card mx-4 mt-4 border-b-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
@@ -201,12 +201,14 @@ const BrowseSpaces = () => {
         <div className="flex gap-8">
           {/* Filters Sidebar */}
           {showFilters && (
-            <div className="w-80 flex-shrink-0">
-              <SpaceFilters
-                filters={filters}
-                onFiltersChange={handleFilterChange}
-                onClearFilters={clearFilters}
-              />
+            <div className="w-72 flex-shrink-0">
+              <div className="floating-card p-4">
+                <SpaceFilters
+                  filters={filters}
+                  onFiltersChange={handleFilterChange}
+                  onClearFilters={clearFilters}
+                />
+              </div>
             </div>
           )}
 
@@ -224,8 +226,8 @@ const BrowseSpaces = () => {
             ) : (
               <div className={
                 viewMode === 'grid'
-                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  : "space-y-6"
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                  : "space-y-4"
               }>
                 {filteredSpaces.map((space) => (
                   <SpaceCard
