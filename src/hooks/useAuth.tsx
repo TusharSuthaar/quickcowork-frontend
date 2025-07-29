@@ -1,6 +1,26 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 
-const AuthContext = createContext();
+interface User {
+  id: string;
+  email: string;
+  role: 'owner' | 'renter' | 'admin';
+  name: string;
+  avatar: string;
+}
+
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string, role?: string) => Promise<void>;
+  signup: (email: string, password: string, role?: string, name?: string) => Promise<void>;
+  logout: () => void;
+  loading: boolean;
+  isAuthenticated: boolean;
+  isOwner: boolean;
+  isRenter: boolean;
+  isAdmin: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -10,8 +30,8 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,15 +43,15 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password, role = 'renter') => {
+  const login = async (email: string, password: string, role: 'owner' | 'renter' | 'admin' = 'renter') => {
     setLoading(true);
     
     // Mock login - in real app, this would be an API call
     setTimeout(() => {
-      const mockUser = {
+      const mockUser: User = {
         id: '1',
         email,
-        role, // 'owner', 'renter', 'admin'
+        role,
         name: email.split('@')[0],
         avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
       };
@@ -43,12 +63,12 @@ export const AuthProvider = ({ children }) => {
     }, 1000);
   };
 
-  const signup = async (email, password, role = 'renter', name) => {
+  const signup = async (email: string, password: string, role: 'owner' | 'renter' | 'admin' = 'renter', name?: string) => {
     setLoading(true);
     
     // Mock signup - in real app, this would be an API call
     setTimeout(() => {
-      const mockUser = {
+      const mockUser: User = {
         id: Date.now().toString(),
         email,
         role,
